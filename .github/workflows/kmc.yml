@@ -1,0 +1,15 @@
+name: LDML Keyboard
+
+on:
+  push:
+    paths:
+      - 'source/*.xml'
+      - '.github/workflows/kmc.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p build/
+      - run: npx --package=@keymanapp/kmc@alpha -c 'kmc --error-reporting build source/*.xml -o build/test.kmx'
