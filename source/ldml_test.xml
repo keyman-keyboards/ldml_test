@@ -11,8 +11,10 @@
     <key id="2" output="2:simple_transform:FAIL" />
     <key id="3" output="3:simple_marker:FAIL\m{marker}" />
     <key id="4" output="4:simple_reorder:UNTIED" />
-
+    <key id="5" output="5:simple_vars:${varsok}"/>
+    <key id="6" output="6:map_var:B\m{map1}X\m{map2}"/>
   </keys>
+
   <layers formId="us">
     <layer modifiers="none">
       <row keys="grave 1 2 3 4 5 6 7 8 9 0 hyphen equal"/>
@@ -44,6 +46,16 @@
     </layer>
   </layers>
   
+  <variables>
+    <string id="varsok" value="OK"/>
+    <!-- 6: first 13 chars and second 13 chars of alphabet -->
+    <set id="alpha1" value="A B C D E F G H I J K L M"/>
+    <set id="alpha2" value="N O P Q R S T U V W X Y Z"/>
+    <!-- 6: regular and rot13 alphabet -->
+    <set id="alpha" value="$[alpha1] $[alpha2]"/>
+    <set id="nycun" value="$[alpha2] $[alpha1]"/> <!-- 'nycun' in rot13 -->
+  </variables>
+
   <transforms type="simple">
     <transformGroup>
       <!--
@@ -63,11 +75,39 @@
       <reorder from="E" order="4" />
       <reorder from="D" order="5" />
     </transformGroup>
+    <!-- 6: rot-13 the last char -->
+    <transformGroup>
+        <transform from="($[alpha])\m{map2}" to="$[1:nycun]"/>
+    </transformGroup>
+    <!-- 6: restore the trailing map2 -->
+    <transformGroup>
+        <transform from="\m{map1}($[alpha])" to="\m{map1}$1\m{map2}"/>
+    </transformGroup>
+    <!-- 6: swap chars -->
+    <transformGroup>
+        <transform from="($[alpha])\m{map1}($[alpha])\m{map2}" to="$2\m{map2}$1\m{map1}" />
+    </transformGroup>
+    <!-- 6: rot-13 the last char -->
+    <transformGroup>
+        <transform from="($[alpha])\m{map1}" to="$[1:nycun]"/>
+    </transformGroup>
+    <!-- 6: restore the trailing map1 -->
+    <transformGroup>
+        <transform from="\m{map2}($[alpha])" to="\m{map2}$1\m{map1}"/>
+    </transformGroup>
+    <!-- 6: swap back -->
+    <transformGroup>
+        <transform from="($[alpha])\m{map2}($[alpha])\m{map1}" to="$2\m{map1}$1\m{map2}" />
+    </transformGroup>
     <transformGroup>
       <transform from="simple_transform:FAIL" to="simple_transform:OK" />
+      <!-- 3: interpret marker results -->
       <transform from="FAIL\m{marker}" to="OK" />
+      <!-- 4: interpret reorder results -->
       <transform from="UNITED" to="OK" />
       <transform from="UNTIED" to="FAIL" />
+      <!-- 6: if untransformed, BX is a failure. -->
+      <transform from=":B\m{.}X\m{.}" to=":FAIL"/>
     </transformGroup>
   </transforms>
 
