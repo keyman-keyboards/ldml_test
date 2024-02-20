@@ -5,7 +5,7 @@ Description
 -----------
 Test Keyboard for LDML
 
-You can test this out, if you type:  `1` (enter) `2` (enter) `3` (enter) `4` (enter) it should output:
+You can test this out, if you type:  <kbd>1</kbd> <kbd>enter</kbd> <kbd>2</kbd> <kbd>enter</kbd> <kbd>3</kbd> <kbd>enter</kbd> <kbd>4</kbd> <kbd>enter</kbd> it should output:
 
 ```
 1:basic:OK
