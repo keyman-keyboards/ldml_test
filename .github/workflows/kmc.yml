@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p build/
-      - run: npx --package=@keymanapp/kmc@alpha -c 'kmc --error-reporting build source/*.xml -o build/test.kmx'
+      - run: npx --package=@keymanapp/kmc@beta -c 'kmc --error-reporting build source/*.xml'
