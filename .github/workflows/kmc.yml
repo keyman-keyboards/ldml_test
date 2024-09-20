@@ -12,4 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p build/
-      - run: npx --package=@keymanapp/kmc@beta -c 'kmc --error-reporting build source/*.xml'
+      - run: npx --package=@keymanapp/kmc -c 'kmc --error-reporting build file ldml_test.kpj'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ldml_test
+          path: build/ldml_test.kmp
